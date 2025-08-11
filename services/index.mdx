@@ -1,0 +1,47 @@
+---
+title: Services
+description: Estrutura e responsabilidade dos arquivos de comunicação com o backend via HTTP e WebSocket.
+---
+
+# 📡 Comunicação com o Backend
+
+Nesta pasta estão localizadas as abstrações responsáveis por intermediar a comunicação entre o **frontend** e o **backend**.
+
+## Estrutura
+
+- **`api.ts`**
+  - Responsável por configurar e gerenciar as chamadas **HTTP** para o backend.
+  - Pode incluir:
+    - Configuração de base URL.
+    - Interceptadores para autenticação, logging ou tratamento de erros.
+    - Funções utilitárias para requisições `GET`, `POST`, `PUT`, `DELETE`, etc.
+  - Exemplo de uso:
+    ```ts
+    import api from './api';
+
+    async function getUserData() {
+      const response = await api.get('/user');
+      return response.data;
+    }
+    ```
+
+- **`socket.ts`**
+  - Responsável por configurar e gerenciar a conexão **WebSocket** (via `Socket.IO` ou similar).
+  - Possui funções para:
+    - Inicializar a conexão.
+    - Escutar eventos vindos do servidor.
+    - Emitir eventos para o servidor.
+    - Tratar reconexões e desconexões.
+  - Exemplo de uso:
+    ```ts
+    import socket from './socket';
+
+    socket.on('connect', () => {
+      console.log('Conectado ao servidor via socket');
+    });
+
+    socket.emit('joinRoom', { roomId: '123' });
+    ```
+---
+
+💡 **Dica:** Mantenha a camada de comunicação desacoplada das regras de negócio. Isso facilita a troca de tecnologias (por exemplo, mudar `axios` por `fetch` ou `Socket.IO` por `WebSocket` puro) sem impactar o restante do código.
