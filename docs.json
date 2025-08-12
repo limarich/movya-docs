@@ -16,6 +16,7 @@
           {
             "group": "Configuração Inicial",
             "pages": [
+              "index",
               "/setup/quickstart",
               "/setup/env",
               "/setup/RNBG",
