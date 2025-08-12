@@ -1,0 +1,124 @@
+---
+title: databases/ (WatermelonDB)
+description: Camada de banco de dados local com WatermelonDB — schemas, models e serviços.
+---
+
+## Visão geral
+
+A pasta `databases/` concentra a **lógica de persistência local** da aplicação usando **WatermelonDB**.  
+A organização segue três blocos:
+
+- **`schemas/`** — definição das tabelas e colunas.
+- **`models/`** — classes que representam entidades, relacionamentos e ações sobre registros.
+- **`services/`** — funções utilitárias que encapsulam consultas e mutações (CRUD) sobre as coleções.
+
+O arquivo `databases/index.ts` monta a instância principal do banco, registra **modelos** e **esquema**, e expõe o objeto `database` para o restante do app.
+
+---
+
+## Estrutura
+
+databases/
+├─ models/
+│ ├─ conversationModel.ts
+│ └─ (…outros modelos, ex.: messageModel, conversationParticipantModel)
+├─ schemas/
+│ └─ conversationParticipants.ts
+├─ services/
+│ ├─ deleteConversationById.ts
+│ ├─ deleteMessageLocally.ts
+│ └─ deletePendingMessageByTempId.ts
+└─ index.ts
+
+```bash
+
+---
+
+## Schemas (`schemas/`)
+
+Os **schemas** definem a estrutura das tabelas com `tableSchema`.  
+Exemplo (trechos de `schemas/conversationParticipants.ts`):
+
+```ts
+import { tableSchema } from '@nozbe/watermelondb';
+
+export const conversationParticipantsSchema = tableSchema({
+  name: 'conversation_participants',
+  columns: [
+    { name: 'id', type: 'string' },
+    { name: 'conversation_id', type: 'string' },
+    { name: 'user_id', type: 'string' },
+    // …demais colunas e índices conforme necessário
+  ],
+});
+
+````
+
+---
+## Models (models/)
+Os models (classes que estendem Model) definem:
+
+Relacionamentos (ex.: hasMany, belongsTo),
+
+Campos calculados / actions,
+
+Convenções de coleção (ex.: static table).
+
+Exemplo (trechos de models/conversationModel.ts):
+
+```bash
+import { Model, Relation } from '@nozbe/watermelondb';
+import { field, children } from '@nozbe/watermelondb/decorators';
+import { MessageModel } from './messageModel';
+import { ConversationParticipantModel } from './conversationParticipantModel';
+
+export class ConversationModel extends Model {
+  static table = 'conversations';
+
+  @field('title') title!: string;
+
+  @children('messages') messages!: Relation<MessageModel>;
+  @children('conversation_participants') participants!: Relation<ConversationParticipantModel>;
+
+  // Ex.: actions transacionais podem ser definidas aqui
+}
+````
+---
+## services
+
+Os services encapsulam consultas e mutações com Q (Query builder), mantendo os componentes livres de detalhes de banco.
+
+Exemplo: apagar conversa por ID
+Trechos de services/deleteConversationById.ts:
+
+``` bash
+import { Q } from '@nozbe/watermelondb';
+import { database } from '~/databases';
+
+export async function deleteConversationById(id: string) {
+  const conversationCollection = database.get('conversations');
+
+  await database.write(async () => {
+    const convo = await conversationCollection.query(Q.where('id', id)).fetch();
+    // …remover dependências (mensagens/participantes), se aplicável
+    // …marcar como deleted ou destroyPermanently()
+  });
+}
+
+````
+Exemplo: apagar mensagem localmente
+Trechos de services/deleteMessageLocally.ts:
+
+```bash
+import { Q } from '@nozbe/watermelondb';
+import { database } from '~/databases';
+
+export async function deleteMessageLocally(messageId: string) {
+  const collection = database.get('messages');
+
+  await database.write(async () => {
+    const msg = await collection.query(Q.where('id', messageId)).fetch();
+    // …soft delete / destroy conforme regra de negócio
+  });
+}
+```

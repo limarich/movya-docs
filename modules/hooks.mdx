@@ -1,0 +1,36 @@
+---
+title: Hooks
+description: Estrutura de abstrações de funções reutilizáveis na aplicação.
+---
+
+## Hooks
+
+Os **Hooks** nesta aplicação funcionam como **abstrações reutilizáveis** que encapsulam lógica de negócios, requisições assíncronas e integração com APIs ou funcionalidades do dispositivo.  
+Eles permitem que componentes consumam funcionalidades complexas de forma simples, sem precisar reimplementar regras e chamadas repetitivas.
+
+Cada hook tem uma responsabilidade clara e é nomeado segundo o padrão `useNomeDaFuncao`, o que favorece a legibilidade e o uso consistente no código.
+
+### Principais Categorias
+
+#### Exemplo de hooks de dados (Data fetching e mutations)  
+Utilizam o `@tanstack/react-query` para buscar, cachear e atualizar dados de forma eficiente.  
+
+- `useFeedPosts` → Lista de posts paginada (scroll infinito).  
+- `usePostById` → Busca detalhes de um post específico.  
+- `useComments` / `useLikeComments` → Gerenciamento de comentários e curtidas.  
+- `useLikePost` / `useLikeFlashes` → Curtidas em posts e "flashes" (stories).  
+- `useFlashes` → Lista de flashes com paginação.
+
+#### Exemplo de hooks de integração com APIs do dispositivo  
+Encapsulam o uso de bibliotecas nativas, mantendo o código organizado e desacoplado.  
+
+- `useMediaLibraryManager` → Acesso e manipulação da galeria de mídia.  
+- `useLoadFonts` → Carregamento de fontes personalizadas.  
+- `useNetworkMonitor` → Monitoramento de conexão com feedback ao usuário.
+
+### Benefícios da abordagem
+
+- **Reutilização**: lógica encapsulada, evitando duplicação.  
+- **Manutenibilidade**: mudanças centralizadas em um único ponto.  
+- **Clareza**: componentes ficam mais enxutos, focando na renderização.  
+- **Performance**: cache e sincronização de dados automáticos via React Query.

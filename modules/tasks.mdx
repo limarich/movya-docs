@@ -1,0 +1,25 @@
+---
+title: Tasks (obsoleto)
+description: Implementação antiga de rastreamento de localização com Expo Task Manager e Location API.
+---
+
+## Visão geral
+
+A pasta `tasks/` contém a implementação original de **rastreamento de localização em segundo plano** utilizando as bibliotecas:
+
+- [`expo-location`](https://docs.expo.dev/versions/latest/sdk/location/) — para solicitar permissões e obter coordenadas.
+- [`expo-task-manager`](https://docs.expo.dev/versions/latest/sdk/task-manager/) — para registrar tarefas que rodam mesmo com o app em background.
+
+Essa abordagem foi **descontinuada** em favor do uso da [**react-native-background-geolocation**](https://github.com/transistorsoft/react-native-background-geolocation), que oferece mais recursos, melhor estabilidade em segundo plano e menos limitações em produção.
+
+---
+
+## Estrutura dos arquivos
+
+### `tasks_names.ts`
+Define constantes para nomear as tarefas registradas no `TaskManager`.  
+Exemplo:
+```ts
+export const TASKS = {
+  LOCATION_TRACKING: "LOCATION_TRACKING_TASK",
+};

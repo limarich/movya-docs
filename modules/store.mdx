@@ -1,0 +1,64 @@
+---
+title: Store
+description: Gerenciamento de estado global com Zustand e integração com banco local (WatermelonDB).
+---
+
+## Visão geral
+
+A pasta `store/` concentra **o gerenciamento de estado global** da aplicação.  
+Ela está organizada em duas subpastas principais:
+
+- **`watermelon/`** — integra com o **WatermelonDB**, responsável por operações persistentes de dados e gerenciamento de sessões de usuários.
+- **`zustand/`** — armazena **stores reativos** criados com [Zustand](https://github.com/pmndrs/zustand) para estados globais como autenticação, status de rede, upload de mídia e notificações.
+
+Embora várias stores sejam usadas no projeto (`chatStore`, `networkStore`, `flashUploadStore`, etc.), o `useAuthStore` é um dos pilares, pois gerencia a sessão e estado de autenticação.
+
+---
+
+## `useAuthStore`
+
+O arquivo `authStore.ts` define o estado e ações relacionadas à autenticação do usuário.  
+Implementado com **Zustand**, ele centraliza:
+
+- Dados da sessão do usuário autenticado.
+- Métodos para **login**, **logout** e recuperação de sessão.
+- Integração com o banco local para persistência.
+- Reset e limpeza do banco de dados (`resetAppDatabase`) ao encerrar sessão.
+- Remoção da sessão (`deleteSession`) e sincronização com o estado local.
+
+### Estrutura típica
+```ts
+import { create } from 'zustand';
+
+interface AuthState {
+  session: Session | null;
+  isLoading: boolean;
+  signIn: (credentials: SignInPayload) => Promise<void>;
+  signOut: () => Promise<void>;
+  loadSession: () => Promise<void>;
+}
+
+export const useAuthStore = create<AuthState>((set, get) => ({
+  session: null,
+  isLoading: false,
+  async signIn(credentials) {
+    // autentica e salva no estado
+  },
+  async signOut() {
+    await deleteSession();
+    await resetAppDatabase();
+    set({ session: null });
+  },
+  async loadSession() {
+    const session = await getSession();
+    set({ session });
+  }
+}));
+````
+---
+Integração com armazenamento local
+localStorageActions.ts — abstrai a leitura e escrita no banco local (database.localStorage), permitindo salvar informações como email do usuário.
+
+localStorageKeys.ts — define constantes para chaves usadas no armazenamento (USER_EMAIL).
+
+---

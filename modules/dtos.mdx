@@ -1,0 +1,45 @@
+---
+title: DTOs
+description: Estrutura de definição e tipagem de dados da aplicação.
+---
+
+## DTOs
+
+Os **DTOs** (_Data Transfer Objects_) nesta aplicação definem **estruturas tipadas** que representam o formato exato de dados trafegados entre o cliente e a API.  
+Eles garantem **consistência**, **clareza** e **segurança de tipo** durante o desenvolvimento, evitando erros de mapeamento ou de formato de payload.
+
+Cada arquivo `.ts` neste diretório contém um ou mais `interfaces` ou `types` do TypeScript que descrevem o contrato de dados para entidades e respostas de serviços.
+
+### Principais DTOs
+
+#### `UserDTO`
+- Representa o usuário autenticado ou participantes de interações.
+- Campos comuns: `id`, `firstName`, `lastName`, `email`, `username`, `role`, `profileImageUrl`.
+
+#### `PostsDTO`
+- Define estruturas relacionadas a publicações, atividades do usuário e comentários.
+- Inclui tipos como `Post`, `Comment` e `UserActivity`.
+
+#### `ConversationsDTO`
+- Modela conversas privadas entre usuários.
+- Inclui: participantes (`Participant[]`), última mensagem (`lastMessage`), status de leitura e datas de criação/atualização.
+
+#### `ProfileDTO`
+- Representa estatísticas e metas de perfil.
+- Contém métricas agregadas como `totalDistance`, `weeklyGoal` e `weekly` progress.
+
+#### `RunDTO`
+- Usado para criar e recuperar dados de corridas e atividades físicas.
+- Inclui dados como `distance`, `duration`, `calories`, `elevation` e `path` (coordenadas GPS).
+
+#### `StoryDTO`
+- Estrutura para "flashes" ou "stories" do aplicativo.
+- Campos: `mediaUrl`, `mediaType`, `duration`, `expiresAt` e status de visualização.
+
+### Benefícios do uso de DTOs
+
+- **Padronização**: todos os serviços seguem contratos de dados claros.
+- **Segurança de tipo**: erros de formato detectados em tempo de desenvolvimento.
+- **Integração simplificada**: o front-end sabe exatamente o que esperar da API.
+- **Facilidade de manutenção**: alterações centralizadas nas interfaces.
+

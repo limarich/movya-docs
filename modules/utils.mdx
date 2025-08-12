@@ -1,0 +1,69 @@
+---
+title: Utils
+description: Funções e classes utilitárias compartilhadas pela aplicação.
+---
+
+## Visão geral
+
+A pasta `utils/` concentra **funções auxiliares e classes utilitárias** que abstraem comportamentos recorrentes no app, melhorando a organização e evitando duplicação de código.  
+Esses utilitários são independentes de componentes visuais e podem ser usados em qualquer parte da aplicação.
+
+---
+
+## Principais utilitários
+
+### `AppError`
+Classe simples para padronizar o tratamento de erros.
+
+```ts
+export class AppError {
+  message: string;
+  constructor(message: string) {
+    this.message = message;
+  }
+}
+```
+
+Usada para diferenciar erros de negócio de erros genéricos.
+
+---
+
+### `formatDate`
+Formata datas (`string` ISO) de forma amigável, exibindo:
+- `"Hoje"` e `"Ontem"` quando aplicável.
+- Datas formatadas com **date-fns** (`dd/MM/yyyy`) para outros casos.
+
+---
+
+### `formatElapsedTime`
+Converte um `timestamp` em texto relativo:
+- `"há X minutos"`, `"há X horas"`, `"há X dias"`.
+- Usa `pt-BR` como locale para saída humanizada.
+
+---
+
+### `formatNumber`
+Formata números com:
+- Casas decimais configuráveis.
+- Separador e ponto decimal customizáveis.
+- Preservação de inteiros quando necessário.
+
+---
+
+### `formatDurationFromSeconds`
+Recebe uma duração em segundos e retorna no formato:
+- `hh:mm:ss`
+- `mm:ss` (quando `includeHours = false`).
+
+---
+
+### `getFileByUri`
+Busca informações de um arquivo a partir de sua URI (via `expo-file-system` e `expo-media-library`), com suporte a `assetId` em iOS/Android.
+
+Notification
+Classe wrapper para exibir notificações via react-native-toast-message.
+
+```ts
+Notification.show({ message: 'Sucesso!', type: 'success' });
+```
+***Use para abstrair a lógica de gerar uma notificação, mas você pode configurar manualmente para ter mais opções***

@@ -18,13 +18,23 @@
             "pages": [
               "/setup/quickstart",
               "/setup/env",
-              "/setup/RNBG"
+              "/setup/RNBG",
+              "/setup/advanced"
             ]
           },
           {
-            "group": "Services",
+            "group": "Módulos",
             "pages": [
-              "services/index"
+              "modules/services",
+              "modules/hooks",
+              "modules/dtos",
+              "modules/app",
+              "modules/tasks",
+              "modules/utils",
+              "modules/store",
+              "modules/databases",
+              "modules/components",
+              "modules/assets"
             ]
           }
         ]

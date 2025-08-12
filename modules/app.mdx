@@ -1,0 +1,26 @@
+---
+title: App/ (Expo Router)
+description: Organização de rotas, navegação e padrões da pasta `app/` com Expo Router.
+---
+
+## Visão geral
+
+A pasta `app/` implementa o **Expo Router**, permitindo declarar telas por **convenção de arquivos**. Cada arquivo `.tsx` dentro de `app/` vira uma rota e **grupos de rotas** como `(public)` e `(private)` organizam fluxos sem impactar a URL final. Navegação imperativa usa `useRouter()`, enquanto a navegação declarativa usa `<Link/>`.
+
+> Exemplos do projeto:
+- `app/login.tsx`: tela de **Login** com links para rotas públicas (ex.: recuperar senha, cadastro) e redirecionamento para tabs privadas após autenticação.
+- `app/mediaCapture.tsx`: tela de **captura de mídia** que utiliza `useRouter()` para voltar após concluir a ação.
+- `app/LocationTest.tsx`: tela de **localização** que usa foco de rota para atualizar dados quando volta ao primeiro plano.
+
+## Convenções de Rotas
+
+### Arquivo → Rota
+- `app/login.tsx` → `/login` (tela pública de autenticação).
+- `app/mediaCapture.tsx` → `/mediaCapture`.
+- `app/LocationTest.tsx` → `/LocationTest`.
+
+### Grupos de rotas
+- `(public)` → telas acessíveis sem sessão (ex.: **login**, **recuperar senha**, **cadastro**).
+- `(private)` → telas autenticadas; pode conter **(tabs)** para a navegação por abas. Após login bem-sucedido, é comum usar `router.replace('/(private)/(tabs)/feed')`.
+
+> **Nota:** Grupos entre parênteses não mudam a URL final; servem para organizar layouts, middlewares e guards por segmento.

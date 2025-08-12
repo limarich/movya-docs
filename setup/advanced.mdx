@@ -1,0 +1,64 @@
+---
+title: (Avançado) Configurações do Projeto
+description: Arquivos de configuração essenciais para build, estilo, babel, TypeScript e Expo.
+---
+
+## Visão geral
+
+O projeto contém uma série de **arquivos de configuração** que definem desde o comportamento de build até padrões de estilo e permissões nativas.  
+Esses arquivos são fundamentais para manter a consistência e permitir que a aplicação funcione corretamente em diferentes ambientes.
+
+---
+
+## Arquivos
+
+### `babel.config.js`
+Configura o Babel para uso no React Native e Expo, incluindo:
+- **Decorators** em modo `legacy`.
+- **Suporte a ícones** com `react-native-iconify/babel`, listando todos os ícones usados.
+- **Plugin do Reanimated** (último da lista, conforme exigência da lib).
+- **Presets**: `babel-preset-expo` e `nativewind/babel`.
+
+---
+
+### `app.config.js`
+Arquivo de configuração principal do **Expo**, contendo:
+- Nome, slug, versão e esquema do app.
+- Plugins e permissões para bibliotecas como `expo-image-picker`, `expo-media-library`, `react-native-vision-camera`, `expo-location`, `@rnmapbox/maps` e `expo-contacts`.
+- Configurações específicas de **iOS** (background modes, permissões de localização, sensores, ícone).
+- Configurações específicas de **Android** (permissões, ícone adaptativo, serviço em foreground).
+- Variáveis de ambiente (`MAPBOX_KEY`, `MAPBOX_DOWNLOAD_TOKEN`).
+- Splash screen e estilos de status bar.
+- `experiments` com `typedRoutes` e `tsconfigPaths`.
+
+---
+
+### `eas.json`
+Configuração para **EAS (Expo Application Services)**:
+- **Perfis de build**: `development`, `preview` e `production`.
+- Definição de distribuição (`internal`, app-bundle para Android, credenciais remotas para iOS).
+- Configuração de `appVersionSource` para atualização remota da versão.
+
+---
+
+### `tailwind.config.js`
+Configuração do **TailwindCSS** com `nativewind`:
+- Diretórios monitorados: `app/` e `components/`.
+- Cores customizadas (`primary`, `charcoal`, `onyx`, etc.).
+- Fonte padrão `Inter`.
+- Nenhum plugin extra configurado no momento.
+
+---
+
+### `tsconfig.json`
+Configuração do **TypeScript**:
+- Extende `expo/tsconfig.base`.
+- `strict` mode ativado.
+- Alias `~/*` para importações absolutas.
+- Suporte a **decorators** (`experimentalDecorators` e `emitDecoratorMetadata`).
+- Módulo `NodeNext` e target `ES6`.
+- Inclui `.expo/types`, `nativewind-env.d.ts` e todos os `.ts`/`.tsx` do projeto.
+
+---
+
+> Alterações nesses arquivos devem ser feitas com cuidado, pois podem impactar diretamente o build, permissões e funcionamento geral da aplicação.
